@@ -1,0 +1,24 @@
+# 忽略本地数据文件夹
+Data/
+Results/
+Backups/
+
+
+# 忽略常见大文件格式
+*.root
+*.hdf5
+*.zip
+*.pt
+*.png
+*.jpg
+*.pdf
+*.npy
+*.json
+
+
+# 忽略临时文件
+*.log
+*.tmp
+__pycache__/
+
+# 忽略特定文件
