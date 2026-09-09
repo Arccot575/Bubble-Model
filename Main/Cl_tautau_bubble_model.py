@@ -27,8 +27,7 @@ def x_bar_e(z, y_re=5.0, delta_y=19.0):
     return x_bar_e
 
 
-
-def P(R, R_bar=5, sigma_lnR=np.log(2)):
+def bubble_radius_distribution_P(R, R_bar=5, sigma_lnR=np.log(2)):
     """
     Calculate the the bubble radius distribution P(R) of the H II region.
 
@@ -79,19 +78,19 @@ z_index = 2  # z=8 corresponds to the third redshift in [6,7,8,10]
 P_matter_interp = interp1d(kh, Pk[z_index, :], kind='linear', fill_value='extrapolate')
 
 
-def V(R):
+def volume_V(R):
     """
     The volume function for the ionized bubble, which is assumed as a sphere.
     """
     return 4/3 * np.pi * R ** 3
 
-def V_bar(R_bar=5, sigma_lnR=np.log(2)):
+def average_volume_V_bar(R_bar=5, sigma_lnR=np.log(2)):
     """
     Expected volume with weight function P(R) for different bubble radius R
     """
 
     def f(R):
-        return P(R, R_bar, sigma_lnR)*V(R)
+        return bubble_radius_distribution_P(R, R_bar, sigma_lnR) * volume_V(R)
     
     Int, error = integrate.quad(
         f, 
@@ -100,7 +99,7 @@ def V_bar(R_bar=5, sigma_lnR=np.log(2)):
         )
     return Int
 
-def W(k, R):
+def top_hat_window_function_W(k, R):
     """
     The Fourier transform of a real-space tophat window function with radius R
 
@@ -118,12 +117,12 @@ def W(k, R):
 
 
 # === F(k): single-k scalar version ===
-def F_single(k):
+def one_bubble_F_single(k):
     """
     Compute F(k) for a single scalar k using numerical integration.
     """
     def f(R):
-        return P(R) * (V(R) * W(k, R))**2
+        return bubble_radius_distribution_P(R, R_bar, sigma_lnR) * (volume_V(R) * top_hat_window_function_W(k, R))**2
     
     Int_F, error_F = integrate.quad(
         f,
@@ -131,7 +130,7 @@ def F_single(k):
         R_max
     )
     
-    V_b = V_bar()
+    V_b = average_volume_V_bar()
     F_val = Int_F/V_b
 
     return F_val
@@ -140,31 +139,31 @@ def F_single(k):
 F_vec = np.vectorize(F_single)
 
 # Alias: F now works for both scalar and array k
-def F(k):
+def one_bubble_F(k):
     return F_vec(k)
 
 
 # === I(k): single-k scalar version ===
-def I_single(k):
+def two_bubble_I_single(k):
     """
     Compute I(k) for a single scalar k using numerical integration.
     """    
     def f(R):
-        return P(R) * V(R) * W(k, R)
+        return bubble_radius_distribution_P(R) * volume_V(R) * top_hat_window_function_W(k, R)
     
     Int_I, error_I = integrate.quad(
         f,
         0,
         R_max
     )
-    V_b = V_bar()
+    V_b = average_volume_V_bar()
     
-    I_val = b * Int_I/V_b
+    I_val = bubble_radius_distribution_P(R_bar) * Int_I/V_b
 
     return I_val
 
 # Vectorize: allows I to accept array k
-I_vec = np.vectorize(I_single)
+I_vec = np.vectorize(two_bubble_I_single)
 
 def I(k):
     return I_vec(k)
@@ -201,7 +200,7 @@ mu_grid=np.linspace(-1,1,100)
 #     return total / (2*np.pi)**2
 
 
-def G_single(k):
+def one_bubble_G_single(k):
 
     integrand_kp = []
 
@@ -241,7 +240,7 @@ G_interp = interp1d(k_grid, G_grid, kind='linear', fill_value='extrapolate')
 
 # === Fast power spectrum functions using pre-computed interpolators ===
 
-def P_1b(k, x_e):
+def one_bubble_P_1b(k, x_e):
     """
     1-bubble term of the ionization power spectrum.
     """
@@ -253,7 +252,7 @@ def P_1b(k, x_e):
 
     return P1_val
 
-def P_2b(k, x_e):
+def two_bubble_P_2b(k, x_e):
     """
     2-bubble term of the ionization power spectrum.
     """
@@ -265,12 +264,12 @@ def P_2b(k, x_e):
 
     return P2_val
 
-def P_DeltaXe(k, x_e):
+def total_P_DeltaXe(k, x_e):
     """
     Total power spectrum = 1-bubble + 2-bubble terms
     """
-    P1_val = P_1b(k, x_e)
-    P2_val = P_2b(k, x_e)
+    P1_val = one_bubble_P_1b(k, x_e)
+    P2_val = two_bubble_P_2b(k, x_e)
 
     return P1_val + P2_val
 
@@ -328,20 +327,21 @@ def Cl_tautau(ell):
         10
     )[0]
 
-ell_grid = np.arange(2, 3000)
+if __name__ == "__main__":
+    ell_grid = np.arange(2, 3000)
 
-Cl_tautau_grid = np.array([
-    Cl_tautau(ell)
-    for ell in ell_grid
-])
+    Cl_tautau_grid = np.array([
+        Cl_tautau(ell)
+        for ell in ell_grid
+    ])
 
-plt.semilogy(
-    ell_grid,
-    ell_grid*(ell_grid + 1)*Cl_tautau_grid / (2 * np.pi)
-)
+    plt.semilogy(
+        ell_grid,
+        ell_grid*(ell_grid + 1)*Cl_tautau_grid / (2 * np.pi)
+    )
 
-plt.xlabel(r"$\ell$")
-plt.ylabel(r"$\ell(\ell + 1)C_\ell^{\tau\tau}/(2\pi)$")
-plt.xlim([2, 3000])
-plt.show()
+    plt.xlabel(r"$\ell$")
+    plt.ylabel(r"$\ell(\ell + 1)C_\ell^{\tau\tau}/(2\pi)$")
+    plt.xlim([2, 3000])
+    plt.show()
 
