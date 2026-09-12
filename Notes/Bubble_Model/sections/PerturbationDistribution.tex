@@ -1,0 +1,197 @@
+\section{Perturbation Distribution}
+	Assuming  H II bubbles populate a large volume $V_0$ as a Poisson process.In addition the bubbles' distribution of radii is expressed in an arbitrary distribution $P(R)$.The volume of each bubble $V_b$ is,
+	\begin{equation}
+	 V_b(R) = \dfrac{4}{3}\pi R^3.
+	\end{equation}
+	
+	Then the ionization fraction at point $\mathbf{r}$ is
+	\begin{equation}
+		\left<
+			x(\textbf{r})
+		\right>_P
+		=
+		1-\exp{
+			-\int \dd{R}{
+				\dfrac{
+					\dd{n_b}}{\dd {R}
+					}V_b(R)
+				}
+			},
+		\label{eq:xP}
+	\end{equation}
+	where ${\dd{n_b}}/{\dd {R}} = n_b(\textbf{r})P(R)$, and $n_b(\textbf{r})$ is \textcolor{blue}{the comoving  bubble number density}. The subscript P means averaging over the Poisson process.
+	
+	Taking the average of equation \eqref{eq:xP} over volume $V_0$, we can get the averaged ionization fraction in $V_0$
+	\begin{equation}
+		x_e = 
+		1-
+		\dfrac{1}{V_0}\int_{V_0}\dd^3{r}~{\exp{-\int \dd{R}{\dfrac{\dd{n_b}}{\dd {R}}V_b(R)}}}
+		\label{eq:x_e}
+	\end{equation}
+	
+	Assuming the number density fluctuates as \textcolor{blue}{a bias tracer of the large scale structure} with bubble bias $b(R)$: 
+	\begin{equation}
+		\dfrac{\dd{n_b}}{\dd{R}}
+		=\dfrac{
+			\dd{\bar{n}_b}}{\dd{R}
+			}
+		(1+b(R)
+		\delta_W(\textbf{r})),
+		\label{eq:nb_fluc}
+	\end{equation}
+	where $\delta_W(\textbf{r}) = \int \dd^3{r^\prime}{\delta(\textbf{r}^\prime)W_R(\textbf{r}-\textbf{r}^\prime)}$ is the overdensity $\delta$ smoothed with \textcolor{blue}{a top-hat window function}
+	\begin{equation}
+		W_R(k) = \dfrac{3}{(kR)^3}[\sin(kR)-kR\cos(kR)]
+		\label{eq:W_R}
+	\end{equation}
+	For simplicity, we assume the bubble bias $b(R)$ is a constant b, independent of R.
+	
+	Substituting with the number density fluctuation  \eqref{eq:nb_fluc} into equation \eqref{eq:x_e} and expanding the exponential term, we obtain:
+	\begin{align}
+		1-x_e 
+		&= 
+		\dfrac{1}{V_0}
+		\int_{V_0}\dd^3{r}
+		~{\exp{
+				-\int \dd{R}{
+				\dfrac{
+					\dd{\bar{n}_b}}{\dd{R}
+				}
+				(
+					1+b\delta_W(\textbf{r})
+				)V_b(R)}
+			}
+		}\notag\\
+		&\approx
+		\dfrac{1}{V_0}
+		\int_{V_0}\dd^3{r}
+		~\left[
+			1-\int \dd{R}{
+				\dfrac{
+					\dd{\bar{n}_b}}{\dd{R}
+				}
+				(
+				b\delta_W(\textbf{r})
+				)V_b(R)}
+		\right]
+		\exp{
+			-\int\dd{R}{
+				\dfrac{
+					\dd{\bar{n}_b}
+					}{\dd{R}}
+				V_b(R)
+			}
+		}
+		\label{eq:expand_x_e}
+	\end{align}
+	Assuming \textcolor{blue}{the integral of $\delta_W(\textbf{r})$ over a sufficiently large volume $V_0$ approaches 0}, the integral in the square brackets goes to 0.For the additional exponential term, using ${\dd{n_b}}/{\dd {R}} = n_b(\textbf{r})P(R)$, we obtain
+	\[
+	\exp{
+		-\int\dd{R}{
+			\dfrac{
+				\dd{\bar{n}_b}
+			}{\dd{R}}
+			V_b(R)
+		}
+	}=
+	\exp{-\bar{n}_b\int\dd{R}{
+		V_b(R)P(R)
+	}}
+	=e^{-\bar{n}_b\left<V_b\right>}
+	,
+	\]
+	where 
+	\[
+	\left<V_b\right> \equiv \int\dd{R}{
+		V_b(R)P(R)
+	}.
+	\]
+	Since the exponential term is independent of the parameter r, it can be taken out of the integral. Therefore the equation \eqref{eq:expand_x_e} can be written as
+	\begin{equation}
+		1-x_e \approx e^{-\bar{n}_b\left<V_b\right>}
+		\label{eq:1-x_e}
+	\end{equation}	
+	
+	Similarly, expand the equation \eqref{eq:xP}, we obtain
+	\begin{align}
+		\left<
+		x(\textbf{r})
+		\right>_P
+		&=
+		1-\exp{
+			-\int \dd{R}{
+				\dfrac{
+					\dd{n_b}}{\dd {R}
+				}V_b(R)
+			}
+		}
+		\notag\\
+		&=
+		1-\exp{
+			-\int \dd{R}\left[
+				\bar{n}_b P(R)(
+				1+b\delta_W(\mathbf{r})
+				)
+				V_b(R)
+			\right]
+		}
+		\notag\\
+		&=
+		1-e^{
+			-\bar{n}_b\left<
+				V_b
+			\right>
+			}\times\exp{
+			-\int \dd{R}\left[
+				\bar{n}_b P(R)b\delta_W(\mathbf{r})V_b(R)
+			\right]
+		}
+		\notag\\
+		&\approx
+		1-e^{
+			-\bar{n}_b\left<
+				V_b
+			\right>
+		}\times\left\{
+			1-\int \dd{R}\left[
+				\bar{n}_b P(R)b\delta_W(\mathbf{r})V_b(R)
+			\right]
+		\right\}
+		\notag\\
+		&=
+		1-(1-x_e)
+		+(1-x_e) b \bar{n}_b
+		\times\int \dd{R}\left[
+				P(R)\delta_W(\mathbf{r})V_b(R)
+			\right]
+		\notag\\
+		&=
+		x_e + (1-x_e) \bar{n}_b b \int\dd{R}{P(R) V_b(R) \delta_W(\mathbf{r})},
+	\end{align}
+	so the perturbation of the ionized fraction at point $\mathbf{r}$ is
+	\begin{align*}
+		\left<
+		\delta{x(\textbf{r})}
+		\right>_P
+		=
+		\left<
+		x(\textbf{r})
+		\right>_P
+		-x_e
+		=(1-x_e) \bar{n}_b b \int\dd{R}{P(R) V_b(R) \delta_W(\mathbf{r})}.
+	\end{align*}
+	Using the Eq.\eqref{eq:1-x_e}, we obtain $\bar{n}_b = -\dfrac{\ln(1-x_e)} {\left<V_b\right>}$. Substituting $\bar{n}_b$ to $\left<\delta{x(\textbf{r})}\right>_P$,
+	we obtain
+	\begin{equation}
+		\left<
+		\delta{x(\textbf{r})}
+		\right>_P
+		=
+		-\dfrac{
+			(1-x_e)\ln(1-x_e)
+			}{\left<
+				V_b
+			\right>} b \int\dd{R}{
+				P(R) V_b(R) \delta_W(\mathbf{r})
+			}
+	\end{equation}

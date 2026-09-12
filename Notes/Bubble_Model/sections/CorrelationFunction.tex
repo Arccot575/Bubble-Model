@@ -1,0 +1,103 @@
+\section{Two-points correlation function and power spectrum}
+	Overdensity $\delta(\mathbf{x}) = (\rho(\textbf{x})-\bar{\rho})/\bar{\rho}$ describes the relative excess density at point $\mathbf{x}$.Based on the overdensity $\delta(\textbf{x})$, we obtain the two-points correlation function $\xi(r)$:
+	\begin{equation}
+		\xi(\abs{\mathbf{x_1}-\mathbf{x_2}}) 
+		=
+		\left<
+			\delta(\mathbf{x_1})\delta(\mathbf{x_2})
+		\right>.
+	\end{equation}
+	It describes the excess probability of finding two galaxies separated by distance $r=\abs{\mathbf{x_1}-\mathbf{x_2}}$. Here, 'excess' refers to the additional probability relative to a random distribution. Mathematically, the probability $\dd{P_{excess}} = n^2\xi(r)\dd{V_1}\dd{V_2}$ is the excess probability in the actual probability $\dd{P_{actual}} = n^2(1+\xi(r))\dd{V_1}\dd{V_2}$.
+	
+	For the ionization field, it can be written as:
+	\[
+		x(\mathbf{r}) = x_e + \delta x(\mathbf{r}).
+	\]
+	so that,
+	\begin{align}
+		\delta_{\text{HII}}(\mathbf{r}) &= x(\mathbf{r})\times\dfrac{\rho(\mathbf{r})}{\bar{\rho}}-x_e*\dfrac{\bar{\rho}}{\bar{\rho}}
+		\notag\\
+		&= 
+		[x_e + \delta x(\mathbf{r})]\times[1+\delta(\mathbf{r})]-x_e
+		\notag\\
+		&=
+		x_e + \delta x(\mathbf{r}) + [x_e + \delta x(\mathbf{r})]\delta(\mathbf{r})-x_e
+		\notag\\
+		&=
+		\delta x(\mathbf{r}) + [x_e + \delta x(\mathbf{r})]\delta(\mathbf{r})
+	\end{align}
+	
+	Therefore, the two-points correlation function of ionized hydrogen is,
+	\begin{align}
+		\xi_{\text{HII}\text{HII}}(r) &= \left<
+			\delta_{\text{HII}}(\mathbf{r_1})\delta_{\text{HII}}(\mathbf{r_2})
+		\right>
+		\notag\\
+		&=
+		\left<
+			\left\lbrace
+			\delta x(\mathbf{r_1}) + [x_e + \delta x(\mathbf{r_1})]\delta(\mathbf{r_1})
+			\right\rbrace\left\lbrace
+			\delta x(\mathbf{r_2}) + [x_e + \delta x(\mathbf{r_2})]\delta(\mathbf{r_2})
+			\right\rbrace
+		\right>
+		\notag\\
+		&=
+		\left<
+			\delta x(\mathbf{r_1})\delta x(\mathbf{r_2})
+		\right>
+		+x_e^2
+		\left<
+			\delta(\mathbf{r_1})\delta(\mathbf{r_2})
+		\right>
+		+\left<
+			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})\delta x(\mathbf{r_2})\delta(\mathbf{r_2})
+		\right>
+		\notag\\
+		&+
+		2\left<
+			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})\delta x(\mathbf{r_2})
+		\right>
+		+2x_e\left<
+		\delta x(\mathbf{r_1})\delta(\mathbf{r_1})\delta (\mathbf{r_2})
+		\right>
+		+2x_e\left<
+		\delta(\mathbf{r_1})\delta x(\mathbf{r_2})
+		\right>
+	\end{align}
+
+Considering Wick's theorem, we can decompose the four-point correlation function into two-point correlation functions. Therefore, we have:
+	\begin{align}
+		\xi_{\text{HII}\text{HII}}(r) &= \left<
+			\delta_{\text{HII}}(\mathbf{r_1})\delta_{\text{HII}}(\mathbf{r_2})
+		\right>
+		\notag\\
+		&=
+		\left<
+			\delta x(\mathbf{r_1})\delta x(\mathbf{r_2})
+		\right>
+		+x_e^2
+		\left<
+			\delta(\mathbf{r_1})\delta(\mathbf{r_2})
+		\right>
+		+\left<
+			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})
+		\right>\left<
+			\delta x(\mathbf{r_2})\delta(\mathbf{r_2})
+		\right>
+		\notag\\
+		&+
+		2\left<
+			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})
+		\right>\left<
+			\delta x(\mathbf{r_2})
+		\right>
+		+2x_e\left<
+		\delta x(\mathbf{r_1})\delta(\mathbf{r_1})
+		\right>\left<
+		\delta (\mathbf{r_2})
+		\right>
+		+2x_e\left<
+		\delta(\mathbf{r_1})\right>\left<\delta x(\mathbf{r_2})
+		\right>
+	\end{align}	

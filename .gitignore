@@ -3,6 +3,20 @@ Data/
 Results/
 Backups/
 
+# 忽略tex编译时产生的临时文件以及pdf文件
+Notes/out/
+*.aux
+*.bbl
+*.bib
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.pdf
 
 # 忽略常见大文件格式
 *.root
