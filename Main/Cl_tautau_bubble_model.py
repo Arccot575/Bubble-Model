@@ -44,7 +44,7 @@ def bubble_radius_distribution_P(R, R_bar=5, sigma_lnR=np.log(2)):
     return P_R
 
 
-#### Parameter Set ####
+# === Parameter Set ===
 R_max = 60 # Max radius for integrations and ploting
 R_bar = 5  # characteristic size
 sigma_lnR = np.log(2)  # width of the distribution
@@ -54,7 +54,7 @@ b = 1.0 # bubble bias, for simplicity, the model assumes it to be a constant
 R_values = np.linspace(0.1, R_max, 100)
 
 
-# Now get matter power spectra and sigma8 at redshift 0 and 0.8
+# === Now get matter power spectra and sigma8 at redshift 0 and 0.8 ===
 # parameters can all be passed as a dict as above, or you can call
 # separate functions to set up the parameter object
 pars = camb.set_params(H0=67.5, ombh2=0.022, omch2=0.122, ns=0.965)
@@ -78,26 +78,11 @@ z_index = 2  # z=8 corresponds to the third redshift in [6,7,8,10]
 P_matter_interp = interp1d(kh, Pk[z_index, :], kind='linear', fill_value='extrapolate')
 
 
-def volume_V(R):
+def bubble_volume_V(R):
     """
     The volume function for the ionized bubble, which is assumed as a sphere.
     """
     return 4/3 * np.pi * R ** 3
-
-def average_volume_V_bar(R_bar=5, sigma_lnR=np.log(2)):
-    """
-    Expected volume with weight function P(R) for different bubble radius R
-    """
-
-    def f(R):
-        return bubble_radius_distribution_P(R, R_bar, sigma_lnR) * volume_V(R)
-    
-    Int, error = integrate.quad(
-        f, 
-        0, 
-        R_max
-        )
-    return Int
 
 def top_hat_window_function_W(k, R):
     """
@@ -108,21 +93,44 @@ def top_hat_window_function_W(k, R):
     R (float or array-like): Radius values.
     """
     kR = np.asarray(k) * np.asarray(R)
+
     # Handle kR -> 0 limit: W -> 1
     # Use np.where to avoid division by zero
+
     with np.errstate(invalid='ignore', divide='ignore'):
         W_val = np.where(np.abs(kR) < 1e-10, 1.0,
-                         3/(kR)**3 * (np.sin(kR) - kR * np.cos(kR)))
+                        3/(kR)**3 * (np.sin(kR) - kR * np.cos(kR)))
     return W_val
 
 
+def averaged_bubble_volume_V():
+    """
+    Bubble volume averaged over the distribution P(R)
+    """
+
+    def f(R):
+        return bubble_radius_distribution_P(R)*bubble_volume_V(R)
+
+    Vb, error_Vb = integrate.quad(
+        f,
+        0,
+        R_max
+    )
+
+    return Vb
+
+def averaged_window_function_W(k,R):
+    
+    
+
+
 # === F(k): single-k scalar version ===
-def one_bubble_F_single(k):
+def one_bubble_F(k):
     """
     Compute F(k) for a single scalar k using numerical integration.
     """
     def f(R):
-        return bubble_radius_distribution_P(R, R_bar, sigma_lnR) * (volume_V(R) * top_hat_window_function_W(k, R))**2
+        return bubble_radius_distribution_P(R, R_bar, sigma_lnR) * (bubble_volume_V(R) * top_hat_window_function_W(k, R))**2
     
     Int_F, error_F = integrate.quad(
         f,
@@ -130,18 +138,15 @@ def one_bubble_F_single(k):
         R_max
     )
     
-    V_b = average_volume_V_bar()
+    V_b = averaged_bubble_volume_V
     F_val = Int_F/V_b
 
     return F_val
 
-# Vectorize: allows F to accept array k
-F_vec = np.vectorize(F_single)
+def one_bubble_G(k):
 
-# Alias: F now works for both scalar and array k
-def one_bubble_F(k):
-    return F_vec(k)
 
+    return  0
 
 # === I(k): single-k scalar version ===
 def two_bubble_I_single(k):
@@ -156,7 +161,7 @@ def two_bubble_I_single(k):
         0,
         R_max
     )
-    V_b = average_volume_V_bar()
+    V_b = averaged_bubble_volume_V()
     
     I_val = bubble_radius_distribution_P(R_bar) * Int_I/V_b
 
@@ -167,75 +172,6 @@ I_vec = np.vectorize(two_bubble_I_single)
 
 def I(k):
     return I_vec(k)
-
-
-# === Pre-compute interpolation tables for F(k), I(k), and G(k) ===
-# These are computed once at module load time, then the fast interpolators
-# replace the slow numerical integrations during the Cl_tautau loop.
-
-k_grid=np.logspace(-3,0,500)
-
-F_grid=np.array(
-    [F(k) for k in k_grid]
-)
-F_interp = interp1d(k_grid, F_grid, kind='linear', fill_value='extrapolate')
-
-I_grid=np.array(
-    [I(k) for k in k_grid]
-)
-I_interp = interp1d(k_grid, I_grid, kind='linear', fill_value='extrapolate')
-
-kp_grid=np.logspace(-3,0,300)
-mu_grid=np.linspace(-1,1,100)
-
-# def G_single(k):
-#     """
-#     Compute G(k) for a single scalar k (used only to build the interpolation table).
-#     """
-#     total = 0.0
-#     for kp in kp_grid:
-#         q = np.sqrt(k**2 + kp**2 - 2*k*kp*mu_grid)
-#         P_mu = np.trapz(P_matter_interp(q), mu_grid)
-#         total += kp**2 * F_interp(kp) * P_mu
-#     return total / (2*np.pi)**2
-
-
-def one_bubble_G_single(k):
-
-    integrand_kp = []
-
-    for kp in kp_grid:
-
-        q = np.sqrt(
-            k**2
-            + kp**2
-            - 2*k*kp*mu_grid
-        )
-
-        P_mu = np.trapezoid(
-            P_matter_interp(q),
-            mu_grid
-        )
-
-        value = (
-            kp**2
-            * F_interp(kp)
-            * P_mu
-        )
-
-        integrand_kp.append(value)
-
-    integral = np.trapezoid(
-        integrand_kp,
-        kp_grid
-    )
-
-    return integral / (2*np.pi)**2
-
-
-# Build G(k) interpolation table — this is the expensive step, done once
-G_grid = np.array([G_single(k) for k in k_grid])
-G_interp = interp1d(k_grid, G_grid, kind='linear', fill_value='extrapolate')
 
 
 # === Fast power spectrum functions using pre-computed interpolators ===
