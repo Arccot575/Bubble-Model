@@ -44,17 +44,18 @@ def bubble_radius_distribution_P(R, R_bar=5, sigma_lnR=np.log(2)):
     return P_R
 
 
-# === Parameter Set ===
+# === Default Parameter Set ===
 R_max = 60 # Max radius for integrations and ploting
 R_bar = 5  # characteristic size
-sigma_lnR = np.log(2)  # width of the distribution
-b = 1.0 # bubble bias, for simplicity, the model assumes it to be a constant
 
+sigma_lnR = np.log(2)  # width of the distribution
+
+b = 1.0 # bubble bias, for simplicity, the model assumes it to be a constant
 
 R_values = np.linspace(0.1, R_max, 100)
 
 
-# === Now get matter power spectra and sigma8 at redshift 0 and 0.8 ===
+# === Get The Matter Power Spectra and Sigma8 at Given Redshift ===
 # parameters can all be passed as a dict as above, or you can call
 # separate functions to set up the parameter object
 pars = camb.set_params(H0=67.5, ombh2=0.022, omch2=0.122, ns=0.965)
@@ -103,24 +104,64 @@ def top_hat_window_function_W(k, R):
     return W_val
 
 
-def averaged_bubble_volume_V():
+def averaged_bubble_volume_V(R_bar, sigma_lnR):
     """
-    Bubble volume averaged over the distribution P(R)
+    Bubble volume averaged over radius R with distribution P(R). 
+    Actually if the distribution P(R) is given, then it can be simplified instead of numerical calculating it.
     """
+    ## numerical integrating, for any given distribution P(R)
+    # def f(R):
+    #     return bubble_radius_distribution_P(R)*bubble_volume_V(R)
 
-    def f(R):
-        return bubble_radius_distribution_P(R)*bubble_volume_V(R)
+    # Vb, error_Vb = integrate.quad(
+    #     f,
+    #     0,
+    #     R_max
+    # )
 
-    Vb, error_Vb = integrate.quad(
-        f,
+    # return Vb
+
+    return 4/3*np.pi * R_bar**3 * np.exp(4.5*sigma_lnR**2)
+
+
+
+def averaged_window_function_W(k, R_bar, sigma_lnR):
+    """
+    Top-hat window function averaged over radius R with distribution P(R)
+    """
+    kappa = k*R_bar
+
+    def f(chi):
+        return (1/chi) * (np.sin(kappa*chi)-kappa*chi*np.cos(kappa*chi)) * np.exp(-(np.log(chi))**2 / (2*sigma_lnR**2))
+
+    W_int, error_w_int = integrate.quad(
+        f,            
         0,
         R_max
     )
 
-    return Vb
+    coeff = 3*np.exp(-4.5*sigma_lnR**2) / (np.sqrt(2*np.pi) * sigma_lnR  * kappa**3)
 
-def averaged_window_function_W(k,R):
-    
+    return coeff * W_int
+
+def averaged_squared_window_function_W_2(k, R_bar, sigma_lnR):
+    """
+    Squared top-hat window function averaged over radius R with distribution P(R)
+    """
+    kappa = k*R_bar
+
+    def f(chi):
+        return (1/chi ) * (np.sin(kappa*chi)-kappa*chi*np.cos(kappa*chi))**2 * np.exp(-(np.log(chi))**2 / (2*sigma_lnR**2))
+
+    W_int, error_w_int = integrate.quad(
+        f,            
+        0,
+        R_max
+    )
+
+    coeff = 9* np.exp(-9*sigma_lnR**2) / (np.sqrt(2*np.pi) * sigma_lnR * kappa**6)
+
+    return coeff * W_int
     
 
 
