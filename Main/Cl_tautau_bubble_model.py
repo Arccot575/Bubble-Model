@@ -1,3 +1,5 @@
+from math import log
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as integrate
@@ -5,6 +7,7 @@ from scipy.interpolate import interp1d
 
 import camb
 from camb import model
+from sympy import ln
 
 
 def x_bar_e(z, y_re=5.0, delta_y=19.0):
@@ -179,7 +182,7 @@ def one_bubble_F(k):
         R_max
     )
     
-    V_b = averaged_bubble_volume_V
+    V_b = averaged_bubble_volume_V()
     F_val = Int_F/V_b
 
     return F_val
@@ -190,29 +193,16 @@ def one_bubble_G(k):
     return  0
 
 # === I(k): single-k scalar version ===
-def two_bubble_I_single(k):
+def two_bubble_term_P2b(k):
     """
-    Compute I(k) for a single scalar k using numerical integration.
+    Compute two bubble term
     """    
-    def f(R):
-        return bubble_radius_distribution_P(R) * volume_V(R) * top_hat_window_function_W(k, R)
-    
-    Int_I, error_I = integrate.quad(
-        f,
-        0,
-        R_max
-    )
-    V_b = averaged_bubble_volume_V()
-    
-    I_val = bubble_radius_distribution_P(R_bar) * Int_I/V_b
 
-    return I_val
+    W_Rk = averaged_window_function_W(k)
 
-# Vectorize: allows I to accept array k
-I_vec = np.vectorize(two_bubble_I_single)
+    P2b = ((1-x_bar_e)*np.log(1-x_bar_e)*b*W_Rk - x_bar_e)**2 *Pk
 
-def I(k):
-    return I_vec(k)
+    return P2b
 
 
 # === Fast power spectrum functions using pre-computed interpolators ===
