@@ -10,6 +10,7 @@ from camb import model
 from sympy import ln
 
 
+    
 def x_bar_e(z, y_re=5.0, delta_y=19.0):
     """
     Calculate the average ionization fraction of hydrogen in a plasma given the redshift z.
@@ -293,6 +294,19 @@ def Cl_tautau(ell):
         6,
         10
     )[0]
+
+
+def CB_l(ell, sigma_T, n_p0, D_A_0):
+    k = ell/D_A_0
+    def integrand(z):
+        (1+z)**4/(Hubble(z)*D_A(z)**2)*np.exp(-2*tau(z))*Q_rms(z)**2*P_delta(k,Z)
+
+    CB_ell, sigma = integrate(
+        integrand,
+        z_f,
+        z_i
+    )
+    return CB_ell
 
 if __name__ == "__main__":
     ell_grid = np.arange(2, 3000)
