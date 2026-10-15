@@ -1,6 +1,4 @@
-from cProfile import label
 
-from matplotlib.lines import lineStyles
 import numpy as np
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
