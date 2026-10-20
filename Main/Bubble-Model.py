@@ -93,6 +93,56 @@ class BubbleModel():
 
         return V_bar
 
+    def averaged_window_function_W(kappa, sigma_lnR):
+
+        def f_log(u):
+            x = kappa * np.exp(u)
+
+            return (
+                np.sin(x) - x * np.cos(x)
+            ) * np.exp(-u**2 / (2 * sigma_lnR**2))
+
+        W_int, error_w_int = integrate.quad(
+            f_log,
+            -10 * sigma_lnR,
+            10 * sigma_lnR,
+            epsabs=1e-12,
+            epsrel=1e-10,
+            limit=1000
+        )
+
+        coeff = (
+            3 * np.exp(-4.5 * sigma_lnR**2)
+            / (np.sqrt(2*np.pi) * sigma_lnR * kappa**3)
+        )
+
+        return coeff * W_int
+
+    def averaged_squared_window_function_W_2(kappa, sigma_lnR):
+        """
+        Squared top-hat window function averaged over radius R with distribution P(R)
+        """
+
+        def f_log(u):
+            theta = kappa * np.exp(u)
+
+            return  (
+                np.sin(theta)-theta*np.cos(theta)
+            )**2 * np.exp(-u**2 / (2*sigma_lnR**2))
+
+        W_int, error_w_int = integrate.quad(
+            f_log,
+            -10 * sigma_lnR,
+            10 * sigma_lnR,
+            epsabs=1e-12,
+            epsrel=1e-10,
+            limit=1000
+        )
+
+        coeff = 9* np.exp(-9*sigma_lnR**2) / (np.sqrt(2*np.pi) * sigma_lnR * kappa**6)
+
+        return coeff * W_int
+
     def one_bubble_F(k):
         """
         Compute F(k) for a single scalar k using numerical integration.

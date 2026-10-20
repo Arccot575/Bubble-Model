@@ -1,4 +1,4 @@
-\section{Two-points correlation function and power spectrum}
+\section{Two-points correlation function}
 	Overdensity $\delta(\mathbf{x}) = (\rho(\textbf{x})-\bar{\rho})/\bar{\rho}$ describes the relative excess density at point $\mathbf{x}$.Based on the overdensity $\delta(\textbf{x})$, we obtain the two-points correlation function $\xi(r)$:
 	\begin{equation}
 		\xi(\abs{\mathbf{x_1}-\mathbf{x_2}}) 
@@ -66,7 +66,7 @@
 		\right>
 	\end{align}
 
-Considering Wick's theorem, we can decompose the four-point correlation function into two-point correlation functions. Therefore, we have:
+Considering Wick's theorem, we can decompose the four-point correlation function into two-point correlation functions, and decompose the three-point correlation function into a two-point one times a one-point one. However, due to the assumption that the average of the perturbation is 0, the three-point correlation function is 0. Therefore, we have:
 	\begin{align}
 		\xi_{\text{HII}\text{HII}}(r) &= \left<
 			\delta_{\text{HII}}(\mathbf{r_1})\delta_{\text{HII}}(\mathbf{r_2})
@@ -100,4 +100,27 @@ Considering Wick's theorem, we can decompose the four-point correlation function
 		+2x_e\left<
 		\delta(\mathbf{r_1})\right>\left<\delta x(\mathbf{r_2})
 		\right>
+		\notag\\
+		&=\left<
+			\delta x(\mathbf{r_1})\delta x(\mathbf{r_2})
+		\right>
+		+x_e^2
+		\left<
+			\delta(\mathbf{r_1})\delta(\mathbf{r_2})
+		\right>
+		+\left<
+			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})
+		\right>\left<
+			\delta x(\mathbf{r_2})\delta(\mathbf{r_2})
+		\right>
+		+2x_e\left<
+			\delta(\mathbf{r_1})\delta x(\mathbf{r_2})
+		\right>
+		\notag\\
+		&=
+		\xi_{\delta x\delta x}(r)
+		+x_e^2\xi_{\delta\delta}(r)
+		+\xi_{\delta x \delta \delta x \delta}(r)
+		+2 x_e\xi_{\delta x\delta}(r)
 	\end{align}	
+

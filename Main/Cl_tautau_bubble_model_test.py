@@ -129,44 +129,55 @@ def averaged_bubble_volume_V(R_bar, sigma_lnR):
 
 
 
-def averaged_window_function_W(k, R_bar, sigma_lnR):
-    """
-    Top-hat window function averaged over radius R with distribution P(R)
-    """
-    kappa = k*R_bar
+def averaged_window_function_W(kappa, sigma_lnR):
 
-    def f(chi):
-        return (1/chi) * (np.sin(kappa*chi)-kappa*chi*np.cos(kappa*chi)) * np.exp(-(np.log(chi))**2 / (2*sigma_lnR**2))
+    def f_log(u):
+        x = kappa * np.exp(u)
+
+        return (
+            np.sin(x) - x * np.cos(x)
+        ) * np.exp(-u**2 / (2 * sigma_lnR**2))
 
     W_int, error_w_int = integrate.quad(
-        f,            
-        0,
-        R_max
+        f_log,
+        -10 * sigma_lnR,
+        10 * sigma_lnR,
+        epsabs=1e-12,
+        epsrel=1e-10,
+        limit=1000
     )
 
-    coeff = 3*np.exp(-4.5*sigma_lnR**2) / (np.sqrt(2*np.pi) * sigma_lnR  * kappa**3)
+    coeff = (
+        3 * np.exp(-4.5 * sigma_lnR**2)
+        / (np.sqrt(2*np.pi) * sigma_lnR * kappa**3)
+    )
 
     return coeff * W_int
 
-def averaged_squared_window_function_W_2(k, R_bar, sigma_lnR):
+def averaged_squared_window_function_W_2(kappa, sigma_lnR):
     """
     Squared top-hat window function averaged over radius R with distribution P(R)
     """
-    kappa = k*R_bar
 
-    def f(chi):
-        return (1/chi ) * (np.sin(kappa*chi)-kappa*chi*np.cos(kappa*chi))**2 * np.exp(-(np.log(chi))**2 / (2*sigma_lnR**2))
+    def f_log(u):
+        theta = kappa * np.exp(u)
+
+        return  (
+            np.sin(theta)-theta*np.cos(theta)
+        )**2 * np.exp(-u**2 / (2*sigma_lnR**2))
 
     W_int, error_w_int = integrate.quad(
-        f,            
-        0,
-        R_max
+        f_log,
+        -10 * sigma_lnR,
+        10 * sigma_lnR,
+        epsabs=1e-12,
+        epsrel=1e-10,
+        limit=1000
     )
 
     coeff = 9* np.exp(-9*sigma_lnR**2) / (np.sqrt(2*np.pi) * sigma_lnR * kappa**6)
 
     return coeff * W_int
-    
 
 
 # === F(k): single-k scalar version ===
