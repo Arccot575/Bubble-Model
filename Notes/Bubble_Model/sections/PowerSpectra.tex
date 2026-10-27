@@ -1,1 +1,74 @@
 \section{Power spectrum}
+The H II power spectrum is the Fourier transform of the correlation function,
+\[
+P(k) = \int \dd^3{r} e^{i \textbf{k}\cdot \textbf{r}}\xi(r)
+\]
+
+Following the article, we discuss the power spectrum in two terms, 
+\begin{itemize}
+  \item Two-bubble term: the two contributions are from two bubbles;
+  \item One-bubble term: the two contributions are from the same bubble.
+\end{itemize}
+
+\subsection{Two-bubble terms}
+The two-bubble correlation function is
+\[
+  \xi^{2b}_{\delta_{HII}\delta_{HII}}
+  =
+  \xi^{2b}_{\delta x\delta x}(r)
+  +x_e^2\xi^{2b}_{\delta\delta}(r)
+  +\xi^{2b}_{\delta x \delta \delta x \delta}(r)
+  +2 x_e\xi^{2b}_{\delta x\delta}(r),
+\]
+and the averaged pertubation is,
+\[
+\left<
+\delta{x(\textbf{r})}
+\right>_P
+=
+-\dfrac{
+  (1-x_e)\ln(1-x_e)
+  }{\left<
+    V_b
+  \right>} b \int\dd{R}{
+    P(R) V_b(R) \delta_W(\mathbf{r})
+  }.
+\]
+Note that $\delta_W(\mathbf{r})$ is given by
+\[
+\delta_W(\textbf{r}) = \int \dd^3{r^\prime}{\delta(\textbf{r}^\prime)W_R(\textbf{r}-\textbf{r}^\prime)},
+\]
+this is a convolution of matter fluctuation $\delta(\textbf{r})$ and window function $W_R(\textbf{r})$, which will convert to a product in the fourier space, that is,
+\begin{align*}
+  \delta_W(k;R) = \int \dd^3{r} e^{i \textbf{k}\cdot \textbf{r}}
+  \left[
+    \int \dd^3{r^\prime}{\delta(\textbf{r}^\prime)W_R(\textbf{r}-\textbf{r}^\prime)}
+  \right]
+  = \delta(k)\times W_R(k).
+\end{align*}
+
+So the Fourier transform of $\left<\delta{x(\textbf{r})}\right>_P$ is,
+\[
+\left<\delta{x(k)}\right> = 
+-\dfrac{(1-x_e)\ln(1-x_e)}{\left<V_b\right>} 
+b \int\dd{R}{
+    P(R) V_b(R) \delta_W(k;R)
+}
+\equiv \alpha \delta(k) 
+\int\dd{R}{
+    P(R) V_b(R) W_R(k)
+}
+= \alpha \delta(k)\left<W_R(k)\right>,
+\]
+here $\alpha \equiv -\dfrac{(1-x_e)\ln(1-x_e)}{\left<V_b\right>}b$ is a constant independent of R.
+
+Taking the Fourier transform of the corelation function, we obtain the power spectrum of the two-bubble term, and its component is given by
+\begin{align*}
+  P^{2b}_{\delta x\delta x}(k)
+  = \int \dd^3{r} e^{i \mathbf{k}\cdot \mathbf{r}}
+    \left<\delta x(\mathbf{r_1})\delta x(\mathbf{r_2})\right>
+  = \int \dd^3{r} e^{i \mathbf{k}\cdot \mathbf{r}}
+    \left<\delta x(\mathbf{r_1})\right>
+    \left<\delta x(\mathbf{r_2})\right>
+  = \alpha^2 
+\end{align*}

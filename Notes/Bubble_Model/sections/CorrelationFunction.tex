@@ -82,7 +82,6 @@ Considering Wick's theorem, we can decompose the four-point correlation function
 		\right>
 		+\left<
 			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})
-		\right>\left<
 			\delta x(\mathbf{r_2})\delta(\mathbf{r_2})
 		\right>
 		\notag\\
@@ -110,7 +109,6 @@ Considering Wick's theorem, we can decompose the four-point correlation function
 		\right>
 		+\left<
 			\delta x(\mathbf{r_1})\delta(\mathbf{r_1})
-		\right>\left<
 			\delta x(\mathbf{r_2})\delta(\mathbf{r_2})
 		\right>
 		+2x_e\left<
@@ -124,7 +122,11 @@ Considering Wick's theorem, we can decompose the four-point correlation function
 		+2 x_e\xi_{\delta x\delta}(r)
 	\end{align}	
 
-The H II power spectrum is the Fourier transform of the correlation function,
+Here note that the first, second and fourth terms are all two-point correlation function. From \eqref{eq:delta_x} we can know the ionization perturbation $\delta x \propto \delta$, so all these two-point correlation functions are proportional to $\left<\delta^2\right>$. The third term $\xi_{\delta x\delta\delta x\delta}$ is a four-point correlation function, in a Gaussian approximation it can be written as,
 \[
-P(k) = \int \dd^3{r} e^{i \textbf{k}\cdot \textbf{r}}\xi(r)
+\xi_{\delta x\delta\delta x\delta} 
+= \left<\delta x_1 \delta x_2\right>\left<\delta_1 \delta_2\right>
++ \left<\delta x_1 \delta_2\right>\left<\delta_1 \delta x_2\right>
++ \left<\delta x_1 \delta_1\right>\left<\delta x_2 \delta_2\right>.
 \]
+Similarly, all these component is proportional to $\left<\delta^2\right>^2$. Considering $\left<\delta\right>$ is a small amount, theoritically the four-point function can be negelacted, but as we will see, it can be important in some cases. Beside, the term $\left<\delta x_1 \delta_1\right>\left<\delta x_2 \delta_2\right>$ is neglectable in the fourier space, because the average of $\delta x_1 \delta_1$ in the same bubble is a constant, which only influences $k=0$, so it is irrelevant for a power spectrum.
