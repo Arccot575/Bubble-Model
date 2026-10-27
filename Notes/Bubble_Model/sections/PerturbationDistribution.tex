@@ -30,7 +30,7 @@
 		\label{eq:x_e}
 	\end{equation}
 	
-	Assuming the number density fluctuates as \textcolor{blue}{a bias tracer of the large scale structure} with bubble bias $b(R)$: 
+	Assuming the number density fluctuates as \textcolor{blue}{a bias tracer of the large scale structure} with bubble bias $b(R)$, which means the amplitudes of density fluctuations vary with the bubble radius R
 	\begin{equation}
 		\dfrac{\dd{n_b}}{\dd{R}}
 		=\dfrac{
@@ -40,7 +40,7 @@
 		\delta_W(\textbf{r})),
 		\label{eq:nb_fluc}
 	\end{equation}
-	where $\delta_W(\textbf{r}) = \int \dd^3{r^\prime}{\delta(\textbf{r}^\prime)W_R(\textbf{r}-\textbf{r}^\prime)}$ is the overdensity $\delta$ smoothed with \textcolor{blue}{a top-hat window function}
+	where $\delta_W(\textbf{r}) = \int \dd^3{r^\prime}{\delta(\textbf{r}^\prime)W_R(\textbf{r}-\textbf{r}^\prime)}$ is the overdensity $\delta$ smoothed with \textcolor{blue}{a top-hat window function}, aiming to eliminate the error caused by the boundary.
 	\begin{equation}
 		W_R(k) = \dfrac{3}{(kR)^3}[\sin(kR)-kR\cos(kR)]
 		\label{eq:W_R}
@@ -196,3 +196,5 @@
 				P(R) V_b(R) \delta_W(\mathbf{r})
 			}
 	\end{equation}
+
+	
