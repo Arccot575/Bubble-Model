@@ -35,8 +35,8 @@ from bubblemodel import matter as Mat
 # ------------------------------------------------------------------ 参数
 CFG = dict(
     z=11.0,            # 红移
-    z_mid=11.0,        # 再电离中点
-    delta_z=2.0,      # 再电离宽度
+    z_mid=9.5,        # 再电离中点
+    delta_z=3.5,      # 再电离宽度
     b=1.0,            # 气泡偏置
     R_bar=5.0,        # 平均气泡半径 [Mpc]
     sigma_lnR=0.5,    # lognormal 宽度
@@ -76,7 +76,7 @@ def main():
 
     plt.figure()
     plt.loglog(k, k**3*p1b/(2*np.pi**2), label=r"$P_{1b}$", color="blue")
-    plt.loglog(k, k**3*p2b/(2*np.pi**2), label=r"$P_{2b}$", color="orange")
+    plt.loglog(k, k**3*np.abs(p2b)/(2*np.pi**2), label=r"$P_{2b}$", color="orange")
     plt.loglog(k, k**3*ptot/(2*np.pi**2), label=r"$P_{1b}+P_{2b}$", color="black", linestyle="--")
 
     plt.xlabel(r"$k$ [Mpc$^{-1}$]")

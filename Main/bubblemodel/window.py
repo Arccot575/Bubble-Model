@@ -138,7 +138,6 @@ def G_zero_limit(P_m, kprime_grid, F_kprime):
 
     注意前因子是 1/(2π²) 而不是 1/(2π)²，两者差一个因子 2：
         4π/(2π)³ = 1/(2π²)
-    这是验证 G_of_k 时最容易写错的一处（我第一版就写成了 (2π)²）。
     """
     return float(np.trapezoid(kprime_grid ** 2 * F_kprime * P_m(kprime_grid),
                               kprime_grid) / (2.0 * np.pi ** 2))
@@ -177,7 +176,7 @@ def power_spectra(k, x_e, P_m, b=1.0,
     bracket = (1.0 - x_e) * np.log1p(-x_e) * b * Ibar - x_e
 
     P_1b = x_e * (1.0 - x_e) * (F + G)
-    P_2b = bracket ** 2 * np.asarray(P_m(k), dtype=float)
+    P_2b = (bracket ** 2 - x_e ** 2) * np.asarray(P_m(k), dtype=float)
 
     return dict(k=k, F=F, Ibar=Ibar, G=G, bracket=bracket,
                 P_1b=P_1b, P_2b=P_2b, P_tot=P_1b + P_2b)

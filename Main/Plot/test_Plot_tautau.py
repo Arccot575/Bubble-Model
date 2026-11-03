@@ -32,17 +32,17 @@ from bubblemodel import matter as Mat
 # ------------------------------------------------------------------ 参数
 CFG = dict(
     z_mid=8.0,        # 再电离中点
-    delta_z=2.0,      # 再电离宽度
-    b=1.0,
+    delta_z=3.5,      # 再电离宽度
+    b=6.0,
     R_bar=5.0,
-    sigma_lnR=0.5,
+    sigma_lnR=np.log(2.0),
     R_min=0.02,
     R_max=40.0,
     z_lo=5.0,         # 积分区间（沿视线）
     z_hi=16.0,
     n_z=45,
     ell_min=2.0,
-    ell_max=2000.0,
+    ell_max=3000.0,
     n_ell=60,
 )
 
@@ -76,6 +76,7 @@ def compute(cfg):
                                          np.log10(cfg["ell_max"]), cfg["n_ell"])))
     c1 = np.zeros_like(ell, dtype=float)
     c2 = np.zeros_like(ell, dtype=float)
+    cpm = np.zeros_like(ell, dtype=float)
 
     for j, L in enumerate(ell):
         k = L / chi
@@ -84,29 +85,36 @@ def compute(cfg):
         g_k = np.array([np.interp(np.log(kk), np.log(kgrid), G[z])
                         for z, kk in zip(zg, k)])
         p1 = x_e * (1.0 - x_e) * (f_k + g_k)
+       
         # 2-bubble: [ (1-x_e)ln(1-x_e) b Ibar - x_e ]^2 P_m(k,z)
         ibar = np.interp(np.log(k), np.log(kgrid), Ibar)
         pref = (1.0 - x_e) * np.log(1.0 - x_e) * cfg["b"] * ibar - x_e
-        p2 = pref ** 2 * np.array([P_m[z](kk) for z, kk in zip(zg, k)])
+        p2 = (pref ** 2 - x_e ** 2) * np.array([P_m[z](kk) for z, kk in zip(zg, k)])
+        
+        xe2Pm= x_e ** 2 * np.array([P_m[z](kk) for z, kk in zip(zg, k)])
 
         w2 = W_tau ** 2 / chi ** 2
         c1[j] = np.trapezoid(w2 * p1, chi)
         c2[j] = np.trapezoid(w2 * p2, chi)
 
+        cpm[j] = np.trapezoid(w2 * xe2Pm, chi)
+
     print(f"tau_bar = {float(R.optical_depth(cfg['z_mid'], cfg['delta_z'])):.4f},  "
           f"{len(ell)} 个 ell")
-    return ell, c1, c2, c1 + c2
+    return ell, c1, c2, c1 + c2, cpm
 
 
 def main():
-    ell, c1, c2, ctot = compute(CFG)
+    ell, c1, c2, ctot, cpm = compute(CFG)
     y = 2 * np.pi
 
     plt.figure()
-    plt.loglog(ell, ell * (ell + 1) * c1 / y, label=r"$1$-bubble", color="blue")
-    plt.loglog(ell, ell * (ell + 1) * c2 / y, label=r"$2$-bubble", color="orange")
-    plt.loglog(ell, ell * (ell + 1) * ctot / y, label=r"total", color="black",
+    plt.semilogy(ell, ell * (ell + 1) * c1 / y, label=r"$1$-bubble", color="blue")
+    plt.semilogy(ell, ell * (ell + 1) * c2 / y, label=r"$2$-bubble", color="orange")
+    plt.semilogy(ell, ell * (ell + 1) * ctot / y, label=r"total", color="black",
                linestyle="--")
+    plt.semilogy(ell, ell * (ell + 1) * cpm / y, label=r"$x_e^2 P_m$", color="red",
+               linestyle=":")
 
     plt.xlabel(r"$\ell$")
     plt.ylabel(r"$\ell(\ell+1)C_\ell^{\tau\tau}/2\pi$")
