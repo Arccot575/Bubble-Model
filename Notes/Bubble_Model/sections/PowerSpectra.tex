@@ -78,7 +78,6 @@ Taking the Fourier transform of the corelation function, we obtain the power spe
 
 
 \begin{align*}
-  P_
   P^{2b}(k) = \left[(1-x_e)\ln(1-x_e)b\dfrac{\int\dd{R}P(R)V(R)W(kR)}{\int\dd{R}P(R)V(R)}-x_e\right]^2P(k)
 \end{align*}
 \begin{align*}
@@ -112,46 +111,3 @@ x_e^2 P(k)
 doesn't depend on the scale 
 
 
-The correlation function between Brightness temperature 
-\[
-\psi = (1+\delta_b)x_H\left(\dfrac{T_S-T_{cmb}}{T_S}\right)\simeq (1+\delta_b)x_H
-\]
-and the field
-\[
-X(\hat{n},\chi) = x_e(1+\delta_b)
-\]
-is
-\[
-\xi_{X\psi} = -\xi_{xx}(1+\xi_{\delta\delta})-(\bar{x}_H-\bar{x}_e+\xi_{x\delta})\xi_{x\delta}+(\bar{x}_H-\bar{x}_H^2)\xi_{\delta\delta}
-\]
-where $\xi_{xx} = \left<x_H(\mathbf{x}_1)x_H(\mathbf{x}_2)\right>-\bar{x}_H^2 =\bar{x}_H^2\left<\delta_x(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\right> , \xi_{\delta\delta} = \left<\delta_b(\mathbf{x}_1)\delta_b(\mathbf{x}_2)\right>,\xi_{x\delta} = \left<\delta_b(\mathbf{x}_1)x_H(\mathbf{x}_2)\right> = \left<\delta_b(\mathbf{x}_1)\bar{x}_H[1+\delta_x(\mathbf{x}_2)]\right> = \bar{x}_H\left<\delta_b(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\right>$
-
-The relation between the HI fraction $x_H$ and free electron fraction $x_e$ is given by the following derivation. First we asume that the ionization of helium follows the ionization of hydrogen and the HeI release an electron and becomes HeII in the ionization, then
-\begin{align*}
-  n_{HII} &= f_{HII}n_H =  (1-x_H) n_H,n_{HeII} = f_{HeII} n_{He} = f_{HII}n_{HeII}=  (1-x_H) n_{HeII}\\
-  \Rightarrow x_e &= \dfrac{n_e}{n_H+n_{He}} = \dfrac{n_{HII} + n_{HeII}}{n_H+n_{He}} = f_{HII} = 1-x_H,
-\end{align*}
-therefore, $x_e = 1-\bar{x}_H(1+\delta_x) = \bar{x}_e-\bar{x}_H \delta_x$
-
-To derive $\xi_{X\psi}$, 
-\begin{align*}
-  \xi_{X\psi} &= \left<X\psi\right>-\left<X\right>\left<\psi\right> \\
-  &= \left<(\bar{x}_e-\bar{x}_H \delta_x(\mathbf{x}_1))(1+\delta_b(\mathbf{x}_1))(1+\delta_b(\mathbf{x}_2))\bar{x}_H(1+\delta_x(\mathbf{x}_2))\right>
-  -(\bar{x}_e - \xi_{x\delta}(0))(\bar{x}_H+\xi_{x\delta}(0))\\
-  &= \bar{x}_e \bar{x}_H -\xi_{xx} + \bar{x}_e\bar{x}_H \xi_{\delta\delta}+\bar{x}_e \xi_{x\delta} + \bar{x}_e \xi_{x\delta}(0)-\bar{x}_H \xi_{x\delta}-\bar{x}_H \xi_{x\delta}(0) - \bar{x}_H^2\left<\delta_x(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\delta_b(\mathbf{x}_1)\delta_b(\mathbf{x}_2)\right>\\
-  &-\bar{x}_e \bar{x}_H-\bar{x}_e \xi_{x\delta}(0)+ \bar{x}_H \xi_{x\delta}(0)+ \xi_{x\delta}(0)\xi_{x\delta}(0),
-\end{align*}
-consider
-\begin{align*}
-  \bar{x}_H^2\left<\delta_x(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\delta_b(\mathbf{x}_1)\delta_b(\mathbf{x}_2)\right>
-&= \bar{x}_H^2\left<\delta_x(\mathbf{x}_1) \delta_x(\mathbf{x}_2)\right>\left<\delta_b(\mathbf{x}_1) \delta_b(\mathbf{x}_2)\right>
-+ \bar{x}_H^2\left<\delta_x(\mathbf{x}_1) \delta_b(\mathbf{x}_2\right>\left<\delta_b(\mathbf{x}_1) \delta_x(\mathbf{x}_2)\right>\\
-&+ \bar{x}_H^2\left<\delta_x(\mathbf{x}_1) \delta_b(\mathbf{x}_1)\right>\left<\delta_x(\mathbf{x}_2) \delta_b(\mathbf{x}_2)\right>\\
-&= \xi_{xx}\xi_{bb}+\xi_{x\delta}\xi_{x\delta}+\xi_{x\delta}(0)\xi_{x\delta}(0)
-\end{align*}
-
-then,
-\begin{align*}
-  \xi_{X\psi} &= -\xi_{xx}+\bar{x}_e\bar{x}_H \xi_{\delta\delta}-(\bar{x}_H-\bar{x}_e)\xi_{x\delta}-\xi_{xx}\xi_{bb}-\xi_{x\delta}\xi_{x\delta}\\
-  &= -\xi_{xx}(1+\xi_{bb})+(1-\bar{x}_H)\bar{x}_H\xi_{\delta\delta} - (\bar{x}_H-\bar{x}_e+\xi_{x\delta})\xi_{x\delta}
-\end{align*}

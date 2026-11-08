@@ -11,8 +11,6 @@
 
 注意：Limber 在 l <~ 10 不可靠，那一段不要当真。
 
-运行：
-    cd Main/Plot && python test_Plot_tautau.py
 """
 
 import os

@@ -1,0 +1,72 @@
+\section{Power spectra given by 21 cm line probe}
+\subsection{Correlation function}
+The correlation function between Brightness temperature 
+\[
+\psi = (1+\delta_b)x_H\left(\dfrac{T_S-T_{cmb}}{T_S}\right)\simeq (1+\delta_b)x_H
+\]
+and the field
+\[
+X(\hat{n},\chi) = x_e(1+\delta_b)
+\]
+is
+\[
+\xi_{X\psi} = -\xi_{xx}(1+\xi_{\delta\delta})-(\bar{x}_H-\bar{x}_e+\xi_{x\delta})\xi_{x\delta}+(\bar{x}_H-\bar{x}_H^2)\xi_{\delta\delta}
+\]
+where $\xi_{xx} = \left<x_H(\mathbf{x}_1)x_H(\mathbf{x}_2)\right>-\bar{x}_H^2 =\bar{x}_H^2\left<\delta_x(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\right> , \xi_{\delta\delta} = \left<\delta_b(\mathbf{x}_1)\delta_b(\mathbf{x}_2)\right>,\xi_{x\delta} = \left<\delta_b(\mathbf{x}_1)x_H(\mathbf{x}_2)\right> = \left<\delta_b(\mathbf{x}_1)\bar{x}_H[1+\delta_x(\mathbf{x}_2)]\right> = \bar{x}_H\left<\delta_b(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\right>$.
+
+The relation between the HI fraction $x_H$ and free electron fraction $x_e$ is given by the following derivation. First we asume that the ionization of helium follows the ionization of hydrogen and the HeI releases an electron and becomes HeII in the ionization, then
+\begin{align*}
+  n_{HII} &= f_{HII}n_H =  (1-x_H) n_H,n_{HeII} = f_{HeII} n_{He} = f_{HII}n_{He}=  (1-x_H) n_{He}\\
+  \Rightarrow x_e &= \dfrac{n_e}{n_H+n_{He}} = \dfrac{n_{HII} + n_{HeII}}{n_H+n_{He}} = f_{HII} = 1-x_H,
+\end{align*}
+therefore, $x_e = 1-\bar{x}_H(1+\delta_x) = \bar{x}_e-\bar{x}_H \delta_x$
+
+To derive $\xi_{X\psi}$, 
+\begin{align*}
+  \xi_{X\psi} &= \left<X\psi\right>-\left<X\right>\left<\psi\right> \\
+  &= \left<(\bar{x}_e-\bar{x}_H \delta_x(\mathbf{x}_1))(1+\delta_b(\mathbf{x}_1))(1+\delta_b(\mathbf{x}_2))\bar{x}_H(1+\delta_x(\mathbf{x}_2))\right>
+  -(\bar{x}_e - \xi_{x\delta}(0))(\bar{x}_H+\xi_{x\delta}(0))\\
+  &= \bar{x}_e \bar{x}_H -\xi_{xx} + \bar{x}_e\bar{x}_H \xi_{\delta\delta}+\bar{x}_e \xi_{x\delta} + \bar{x}_e \xi_{x\delta}(0)-\bar{x}_H \xi_{x\delta}-\bar{x}_H \xi_{x\delta}(0) - \bar{x}_H^2\left<\delta_x(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\delta_b(\mathbf{x}_1)\delta_b(\mathbf{x}_2)\right>\\
+  &-\bar{x}_e \bar{x}_H-\bar{x}_e \xi_{x\delta}(0)+ \bar{x}_H \xi_{x\delta}(0)+ \xi_{x\delta}(0)\xi_{x\delta}(0),
+\end{align*}
+consider
+\begin{align*}
+  \bar{x}_H^2\left<\delta_x(\mathbf{x}_1)\delta_x(\mathbf{x}_2)\delta_b(\mathbf{x}_1)\delta_b(\mathbf{x}_2)\right>
+&= \bar{x}_H^2\left<\delta_x(\mathbf{x}_1) \delta_x(\mathbf{x}_2)\right>\left<\delta_b(\mathbf{x}_1) \delta_b(\mathbf{x}_2)\right>
++ \bar{x}_H^2\left<\delta_x(\mathbf{x}_1) \delta_b(\mathbf{x}_2\right>\left<\delta_b(\mathbf{x}_1) \delta_x(\mathbf{x}_2)\right>\\
+&+ \bar{x}_H^2\left<\delta_x(\mathbf{x}_1) \delta_b(\mathbf{x}_1)\right>\left<\delta_x(\mathbf{x}_2) \delta_b(\mathbf{x}_2)\right>\\
+&= \xi_{xx}\xi_{bb}+\xi_{x\delta}\xi_{x\delta}+\xi_{x\delta}(0)\xi_{x\delta}(0)
+\end{align*}
+
+then,
+\begin{align*}
+  \xi_{X\psi} &= -\xi_{xx}+\bar{x}_e\bar{x}_H \xi_{\delta\delta}-(\bar{x}_H-\bar{x}_e)\xi_{x\delta}-\xi_{xx}\xi_{bb}-\xi_{x\delta}\xi_{x\delta}\\
+  &= -\xi_{xx}(1+\xi_{bb})+(1-\bar{x}_H)\bar{x}_H\xi_{\delta\delta} - (\bar{x}_H-\bar{x}_e+\xi_{x\delta})\xi_{x\delta}
+\end{align*}
+
+\subsection{Difference between $P_{X \psi}$ and $P_{\delta_{HII}}$}
+The power spectra of $HII$ fluctuation is given by,
+\begin{align*}
+  P^{2b}_{\delta_{HII}}(k) &= \left[(1-x_e)\ln(1-x_e)b\left<W_R(k)\right>-x_e\right]^2P(k)\\
+  P^{1b}_{\delta_{HII}}(k) &= x_e(1-x_e)[F(k)+G(k)]\\
+  F(k) &= \left<V_b\right>\left<W_R^2(k)\right>\\
+  G(k) &= \int\dfrac{\dd^3\mathbf{k}'}{(2\pi)^3}P(\left|\mathbf{k}-\mathbf{k}'\right|)F(k')\\
+  P_{\delta_{HII}}(k) &= P^{2b}_{\delta_{HII}}(k)+P^{1b}_{\delta_{HII}}(k) 
+\end{align*}
+
+And the cross power spectra of the ionization field $X(\hat{n}, \chi)$ and the brightness temperature field $\psi$ is given by,
+\begin{align*}
+  P_{X \psi}^{2b} &\approx -\bar{x}_H^2\left[\ln{\bar{x}_H} b \left<W_R\right>(k)+1\right]^2P_{\delta\delta}(k)+ \bar{x}_H\left[\ln{\bar{x}_H}b \left<W_R\right>(k)+1\right]P_{\delta\delta}(k)\\
+  P_{X \psi}^{1b} &= -(\bar{x}_e - \bar{x}_e^2)\left[\left<V_b\right>\left<W_R^2\right>(k)+\tilde{P}_{\delta\delta}(k)\right]\\
+  \tilde{P}_{\delta\delta}(k) &= \left<V_b\right>\int \dfrac{\dd^3 k'}{(2\pi)^3}\left<W_R^2\right>(k')P_{\delta\delta}(\left|\mathbf{k}-\mathbf{k}'\right|)\\
+  P_{X \psi} &= P_{X \psi}^{1b}+P_{X \psi}^{2b}.
+\end{align*}
+
+Using the fact $\bar{x}_e = x_e = 1-\bar{x}_H$, and the matter power spectrum $P(k) = P_{\delta\delta}(k)$, we obtain,
+\begin{align*}
+  P_{X \psi}^{2b} &= -P^{2b}_{\delta_{HII}}(k)- \left[(1-x_e)\ln(1-x_e)b\left<W_R(k)\right>-x_e\right] P(k)\\
+  P_{X \psi}^{1b} &= -P^{1b}_{\delta_{HII}}(k)\\
+  P_{X \psi} &= -P_{\delta_{HII}}(k)- \left[(1-x_e)\ln(1-x_e)b\left<W_R(k)\right>-x_e\right]P(k).
+\end{align*}
+
+Theoretically, 

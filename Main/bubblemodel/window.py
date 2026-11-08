@@ -176,7 +176,7 @@ def power_spectra(k, x_e, P_m, b=1.0,
     bracket = (1.0 - x_e) * np.log1p(-x_e) * b * Ibar - x_e
 
     P_1b = x_e * (1.0 - x_e) * (F + G)
-    P_2b = (bracket ** 2 - x_e ** 2) * np.asarray(P_m(k), dtype=float)
+    P_2b = (bracket ** 2 + bracket) * np.asarray(P_m(k), dtype=float)
 
     return dict(k=k, F=F, Ibar=Ibar, G=G, bracket=bracket,
                 P_1b=P_1b, P_2b=P_2b, P_tot=P_1b + P_2b)
