@@ -163,9 +163,24 @@ def sample_radii(rng, n, R_bar=DEFAULT_R_BAR, sigma_lnR=DEFAULT_SIGMA_LNR,
 def n_b_from_xe(x_e_value, mean_V):
     """由式 (1) 反解：n_bar_b = -ln(1 - x_e) / <V_b>。
 
-    量纲检查：x_e 无量纲，<V_b> 单位 Mpc^3，所以 n_bar_b 单位 Mpc^-3 ✓
+    量纲检查：x_e 无量纲，<V_b> 单位 Mpc^3，所以 n_bar_b 单位 Mpc^-3
     """
     x_e_value = np.asarray(x_e_value, dtype=float)
     with np.errstate(divide="ignore", invalid="ignore"):
         n_b = -np.log1p(-x_e_value) / mean_V
     return float(n_b) if n_b.ndim == 0 else n_b
+
+
+# --------------------------------------------------------------------------- #
+# 气泡分布偏置函数 b(R)（可选，默认 b=1.0）
+# 目前暂时未添加，后续考察更细节的模型时加入。
+# --------------------------------------------------------------------------- #
+# def sigma_lin(M, z):
+    
+
+# def b_h(delta_c=1.686, a=0.707, p=0.3, M):
+#     """bubble bias 的积分因子，
+
+#     各参数具体作用详见Wang & Hu 2006（后续补充）
+#     """
+#     return 1+(a*nu**2-1)/delta_c+2*p/(delta_c*(1+(a*nu**2))**p)

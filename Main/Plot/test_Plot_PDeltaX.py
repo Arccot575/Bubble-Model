@@ -34,11 +34,11 @@ from bubblemodel import matter as Mat
 
 # ------------------------------------------------------------------ 参数
 CFG = dict(
-    z=14.0,            # 红移
+    z=11.0,            # 红移
     z_mid=11.0,        # 再电离中点
     delta_z=7,      # 再电离宽度
-    b=1.0,            # 气泡偏置
-    R_bar=5.0,        # 平均气泡半径 [Mpc]
+    b=4.8,            # 气泡偏置
+    R_bar=1.0,        # 平均气泡半径 [Mpc]
     sigma_lnR=0.5,    # lognormal 宽度
     R_min=0.02,
     R_max=40.0,
@@ -68,17 +68,26 @@ def compute(cfg):
         R_max=cfg["R_max"],
     )
     print(f"z = {cfg['z']:g},  x_e = {x_e:.3f}")
-    return sp["k"], sp["P_1b"], sp["P_2b"], sp["P_tot"]
+    return sp["k"], sp["bracket"], sp["P_m"], sp["P_1b"], sp["P_2b"], sp["P_tot"]
 
 
 def main():
-    k, p1b, p2b, ptot = compute(CFG)
+    k, bracket, P_m, p1b, p2b, ptot = compute(CFG)
     
-
+    ## Plot k^3 P_{\delta_{HII}}/2\pi^2
     plt.figure()
-    plt.loglog(k, k**3*np.abs(p1b/(2*np.pi**2)), label=r"$P_{1b}$", color="blue")
-    plt.loglog(k, k**3*np.abs(p2b)/(2*np.pi**2), label=r"$P_{2b}$", color="orange")
-    plt.loglog(k, k**3*np.abs(ptot)/(2*np.pi**2), label=r"$P_{1b}+P_{2b}$", color="black", linestyle="--")
+    plt.loglog(k, k**3*(p1b/(2*np.pi**2)), label=r"$P_{\delta_{HII}}^{1b}$", color="blue")
+    plt.loglog(k, k**3*(p2b)/(2*np.pi**2), label=r"$P_{\delta_{HII}}^{2b}$", color="orange")
+    plt.loglog(k, k**3*(ptot)/(2*np.pi**2), label=r"$P_{\delta_{HII}}$", color="black")
+
+    ## Plot k^3 P_{X\psi}/2\pi^2
+    p1b_Xpsi = -p1b
+    p2b_Xpsi = -p2b-bracket*np.asarray(P_m(k), dtype=float)
+    ptot_Xpsi = p1b_Xpsi+p2b_Xpsi
+    plt.loglog(k, k**3*np.abs(p1b_Xpsi/(2*np.pi**2)), label=r"$P_{X\psi}^{1b}$", color="blue", linestyle="--")
+    plt.loglog(k, k**3*np.abs(p2b_Xpsi/(2*np.pi**2)), label=r"$P_{X\psi}^{2b}$", color="orange", linestyle="--")
+    plt.loglog(k, k**3*np.abs(ptot_Xpsi/(2*np.pi**2)), label=r"$P_{X\psi}$", color="black", linestyle="--")
+
 
     plt.xlabel(r"$k$ [Mpc$^{-1}$]")
     plt.ylabel(r"$k^3P_{\Delta x}(k)/2\pi^2$ [Mpc$^3$]")

@@ -42,7 +42,7 @@ def window_moments(k, R_bar=bubbles.DEFAULT_R_BAR,
                    n_R=DEFAULT_N_R):
     """一次算出 F(k) 和 Ī(k)。
 
-    向量化方式：先把 (nk, nR) 的 W(kR) 张量算出来，再沿 R 方向梯形积分。
+    向量化方式：先把 (nk, nR) 的 W(kR) 矩阵算出来，再沿 R 方向梯形积分。
     内存约 nk*nR*8 字节，150 个 k × 16000 个 R 约 19 MB。
     """
     k = np.atleast_1d(np.asarray(k, dtype=float))
@@ -176,7 +176,7 @@ def power_spectra(k, x_e, P_m, b=1.0,
     bracket = (1.0 - x_e) * np.log1p(-x_e) * b * Ibar - x_e
 
     P_1b = x_e * (1.0 - x_e) * (F + G)
-    P_2b = (bracket ** 2 + bracket) * np.asarray(P_m(k), dtype=float)
+    P_2b = (bracket ** 2) * np.asarray(P_m(k), dtype=float)
 
-    return dict(k=k, F=F, Ibar=Ibar, G=G, bracket=bracket,
+    return dict(k=k, F=F, Ibar=Ibar, G=G, bracket=bracket, P_m = P_m, 
                 P_1b=P_1b, P_2b=P_2b, P_tot=P_1b + P_2b)
