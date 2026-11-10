@@ -36,8 +36,8 @@ from bubblemodel import matter as Mat
 CFG = dict(
     z=11.0,            # 红移
     z_mid=11.0,        # 再电离中点
-    delta_z=7,      # 再电离宽度
-    b=4.8,            # 气泡偏置
+    delta_z=1.1,      # 再电离宽度
+    b=1,            # 气泡偏置
     R_bar=1.0,        # 平均气泡半径 [Mpc]
     sigma_lnR=0.5,    # lognormal 宽度
     R_min=0.02,
@@ -68,29 +68,31 @@ def compute(cfg):
         R_max=cfg["R_max"],
     )
     print(f"z = {cfg['z']:g},  x_e = {x_e:.3f}")
-    return sp["k"], sp["bracket"], sp["P_m"], sp["P_1b"], sp["P_2b"], sp["P_tot"]
+    return sp["k"], sp["bracket"], sp["P_m"], sp["P_1b"], sp["P_2b"], sp["P_tot"], x_e
 
 
 def main():
-    k, bracket, P_m, p1b, p2b, ptot = compute(CFG)
+    k, bracket, P_m, p1b, p2b, ptot, xe = compute(CFG)
     
-    ## Plot k^3 P_{\delta_{HII}}/2\pi^2
-    plt.figure()
-    plt.loglog(k, k**3*(p1b/(2*np.pi**2)), label=r"$P_{\delta_{HII}}^{1b}$", color="blue")
-    plt.loglog(k, k**3*(p2b)/(2*np.pi**2), label=r"$P_{\delta_{HII}}^{2b}$", color="orange")
-    plt.loglog(k, k**3*(ptot)/(2*np.pi**2), label=r"$P_{\delta_{HII}}$", color="black")
+    # ## Plot k^3 P_{\delta_{HII}}/2\pi^2
+    # plt.figure()
+    # plt.loglog(k, k**3*(p1b/(2*np.pi**2)), label=r"$P_{\delta_{HII}}^{1b}$", color="blue")
+    # plt.loglog(k, k**3*(p2b)/(2*np.pi**2), label=r"$P_{\delta_{HII}}^{2b}$", color="orange")
+    # plt.loglog(k, k**3*(ptot)/(2*np.pi**2), label=r"$P_{\delta_{HII}}$", color="black")
 
     ## Plot k^3 P_{X\psi}/2\pi^2
+    P_delta = (xe-xe**2)*np.asarray(P_m(k), dtype=float)
     p1b_Xpsi = -p1b
-    p2b_Xpsi = -p2b-bracket*np.asarray(P_m(k), dtype=float)
+    p2b_Xpsi = -((bracket+1)**2-(bracket+1))*np.asarray(P_m(k), dtype=float)
     ptot_Xpsi = p1b_Xpsi+p2b_Xpsi
+
     plt.loglog(k, k**3*np.abs(p1b_Xpsi/(2*np.pi**2)), label=r"$P_{X\psi}^{1b}$", color="blue", linestyle="--")
     plt.loglog(k, k**3*np.abs(p2b_Xpsi/(2*np.pi**2)), label=r"$P_{X\psi}^{2b}$", color="orange", linestyle="--")
     plt.loglog(k, k**3*np.abs(ptot_Xpsi/(2*np.pi**2)), label=r"$P_{X\psi}$", color="black", linestyle="--")
 
 
     plt.xlabel(r"$k$ [Mpc$^{-1}$]")
-    plt.ylabel(r"$k^3P_{\Delta x}(k)/2\pi^2$ [Mpc$^3$]")
+    plt.ylabel(r"$k^3P(k)/2\pi^2$ [Mpc$^3$]")
     plt.legend()
 
     if SAVE:
