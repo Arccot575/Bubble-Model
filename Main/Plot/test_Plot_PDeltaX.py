@@ -68,7 +68,7 @@ def compute(cfg):
         R_max=cfg["R_max"],
     )
     print(f"z = {cfg['z']:g},  x_e = {x_e:.3f}")
-    return sp["k"], sp["bracket"], sp["P_m"], sp["P_1b"], sp["P_2b"], sp["P_tot"], x_e
+    return sp["k"], sp["bracket"], P_m, sp["P_1b"], sp["P_2b"], sp["P_tot"], x_e
 
 
 def main():
